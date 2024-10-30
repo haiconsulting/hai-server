@@ -1,0 +1,22 @@
+{
+  "name": "hai-server",
+  "version": "1.0.0",
+  "description": "A simple Node.js project using Express",
+  "main": "api/openai.js",
+  "scripts": {
+    "start": "node api/openai.js",
+    "dev": "nodemon api/openai.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "license": "MIT",
+  "keywords": [],
+  "author": "Ian Kinney"
+}
