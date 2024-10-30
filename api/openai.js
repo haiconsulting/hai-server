@@ -20,6 +20,7 @@ app.post('/api/threads', async (req, res) => {
     const thread = await openai.beta.threads.create();
     res.json(thread);
   } catch (error) {
+    console.error('Error creating thread:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -35,6 +36,7 @@ app.post('/api/threads/:threadId/messages', async (req, res) => {
     });
     res.json(message);
   } catch (error) {
+    console.error('Error adding message:', error);
     res.status(500).json({ error: error.message });
   }
 });
