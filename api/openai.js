@@ -4,12 +4,13 @@ const OpenAI = require('openai');
 require('dotenv').config();
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-    origin: '*', // Allow all origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    origin: 'http://localhost:3000', // Allow requests from this origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+    credentials: true // Allow credentials if needed
 }));
 app.use(express.json());
 
@@ -69,5 +70,7 @@ app.get('/api/threads/:threadId/messages', async (req, res) => {
   }
 });
 
-// Export the app as a serverless function
-module.exports = app; 
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
