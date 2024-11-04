@@ -1,3 +1,4 @@
+const functions = require('firebase-functions');
 const express = require('express');
 const cors = require('cors');
 const OpenAI = require('openai');
@@ -5,12 +6,11 @@ require('dotenv').config();
 
 const app = express();
 
-
 app.use(cors({
     origin: true,  // This allows all origins in development
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
-    credentials: false  // Changed to false since we're not using credentials
+    credentials: false
 }));
 
 app.use(express.json());
@@ -87,4 +87,4 @@ app.get('/threads/:threadId/messages', async (req, res) => {
 });
 
 // Start the server
-exports.api = functions.https.onRequest(app);
+exports.app = functions.https.onRequest(app);
