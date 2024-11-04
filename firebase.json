@@ -1,20 +1,14 @@
 {
+  "functions": {
+    "source": ".",
+    "runtime": "nodejs18"
+  },
   "hosting": {
-    "public": "public",
     "rewrites": [
       {
-        "source": "/health",
-        "function": "app"
-      },
-      {
-        "source": "/threads/**",
+        "source": "**",
         "function": "app"
       }
-    ],
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
     ]
   }
 } 
