@@ -6,12 +6,21 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(cors({
-    origin: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
-    credentials: false
-}));
+// More permissive CORS configuration
+app.use((req, res, next) => {
+    // Allow all origins in development
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept, Origin, X-Requested-With');
+    res.set('Access-Control-Max-Age', '3600');
+
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        res.status(204).send('');
+        return;
+    }
+    next();
+});
 
 app.use(express.json());
 
@@ -88,5 +97,17 @@ app.get('/threads/:threadId/messages', async (req, res) => {
 
 // Export the function
 module.exports = {
-    app: functions.https.onRequest(app)
+    app: functions.region('us-central1').https.onRequest((req, res) => {
+        // Set CORS headers for all responses
+        res.set('Access-Control-Allow-Origin', '*');
+        res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept, Origin, X-Requested-With');
+        
+        if (req.method === 'OPTIONS') {
+            res.status(204).send('');
+            return;
+        }
+        
+        return app(req, res);
+    })
 };
