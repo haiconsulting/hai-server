@@ -13,6 +13,6 @@
   },
   "scripts": {
     "start": "node openai.js",
-    "dev": "nodemon openai.js"
+    "deploy": "firebase deploy --only hosting"
   }
 } 

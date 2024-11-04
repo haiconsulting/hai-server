@@ -1,6 +1,16 @@
 {
   "hosting": {
     "public": "public",
+    "rewrites": [
+      {
+        "source": "/health",
+        "function": "app"
+      },
+      {
+        "source": "/threads/**",
+        "function": "app"
+      }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",
