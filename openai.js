@@ -8,11 +8,17 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors({
-    origin: ['https://www.haiconsultingservices.com', 'http://localhost:3000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    origin: [
+        'https://www.haiconsultingservices.com',
+        'http://localhost:3000',
+        'https://haiconsulting.github.io',  // Add GitHub Pages domain
+        'https://hai-home-server.web.app'    // Add Firebase domain itself
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  // Add OPTIONS
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']  // Specify allowed headers
 }));
-app.use(express.json());
+app.use(express.json()); 
 
 // Initialize OpenAI
 const openai = new OpenAI({
