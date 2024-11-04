@@ -9,15 +9,10 @@
     "express": "^4.21.1",
     "cors": "^2.8.5",
     "openai": "^4.55.0",
-    "dotenv": "^16.0.0",
-    "firebase-admin": "^11.11.0",
-    "firebase-functions": "^4.5.0"
+    "dotenv": "^16.0.0"
   },
   "scripts": {
-    "serve": "firebase emulators:start --only functions",
-    "shell": "firebase functions:shell",
-    "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "start": "node openai.js",
+    "dev": "nodemon openai.js"
   }
 } 
