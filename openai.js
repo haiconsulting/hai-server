@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 
 app.use(cors({
-    origin: true,  // This allows all origins in development
+    origin: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
     credentials: false
@@ -86,5 +86,7 @@ app.get('/threads/:threadId/messages', async (req, res) => {
     }
 });
 
-// Start the server
-exports.app = functions.https.onRequest(app);
+// Export the function
+module.exports = {
+    app: functions.https.onRequest(app)
+};
