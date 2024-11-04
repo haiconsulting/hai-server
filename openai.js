@@ -1,3 +1,6 @@
+// Note: Download the service account key from Firebase Console:
+// Project Settings > Service Accounts > Generate New Private Key
+// Save as 'hai-home-server-firebase-adminsdk.json' in this directory
 const functions = require('firebase-functions');
 const express = require('express');
 const cors = require('cors');
