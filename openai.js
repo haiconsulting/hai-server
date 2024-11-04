@@ -4,7 +4,21 @@ const OpenAI = require('openai');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        res.sendStatus(200);
+        return;
+    }
+    next();
+});
 
 // Middleware
 // More permissive CORS configuration
@@ -94,6 +108,4 @@ app.get('/threads/:threadId/messages', async (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+exports.api = functions.https.onRequest(app);
