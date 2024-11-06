@@ -4,6 +4,8 @@
     "runtime": "nodejs18"
   },
   "hosting": {
+    "site": "hai-consulting",
+    "public": "public",
     "headers": [
       {
         "source": "**",
@@ -17,7 +19,7 @@
     ],
     "rewrites": [
       {
-        "source": "**",
+        "source": "/api/**",
         "function": "app"
       }
     ]
