@@ -1,6 +1,7 @@
 {
     "name": "hai-consulting-api",
     "version": "1.0.0",
+    "main": "openai.js",
     "scripts": {
         "start": "func start",
         "test": "echo \"No test specified\"",

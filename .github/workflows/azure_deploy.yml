@@ -20,39 +20,26 @@ jobs:
     - name: 'Checkout Repository'
       uses: actions/checkout@v4
 
-    - name: 'Validate Package Path'
-      run: |
-        if [ ! -d "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}" ]; then
-          echo "Error: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }} directory not found"
-          exit 1
-        fi
-        if [ ! -f "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/host.json" ]; then
-          echo "Error: host.json not found in ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
-          exit 1
-        fi
-
     - name: Setup Node ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-        cache-dependency-path: './api/package-lock.json'
 
-    - name: Install Dependencies
+    - name: 'Resolve Project Dependencies Using Npm'
+      shell: bash
       run: |
-        cd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-        npm ci
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        npm install
+        npm run build --if-present
+        popd
 
-    - name: 'Deploy to Azure Functions'
+    - name: 'Run Azure Functions Action'
       uses: Azure/functions-action@v1
-      id: fa
       with:
         app-name: 'hai-server'
         slot-name: 'production'
         package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
-        scm-do-build-during-deployment: true
-        enable-oryx-build: true
 
     - name: 'Configure Azure Function App Settings'
       uses: Azure/appservice-settings@v1
@@ -76,6 +63,9 @@ jobs:
             {
               "name": "WEBSITE_NODE_DEFAULT_VERSION",
               "value": "~18"
+            },
+            {
+              "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+              "value": "true"
             }
           ]
-      id: settings
