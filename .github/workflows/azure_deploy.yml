@@ -101,3 +101,12 @@ jobs:
               "value": "true"
             }
           ]
+
+    - name: 'Configure CORS'
+      run: |
+        az functionapp cors add --name ${{ env.FUNCTION_APP_NAME }} \
+          --resource-group ${{ env.RESOURCE_GROUP }} \
+          --allowed-origins "http://localhost:3000" "https://haiconsultingservices.com" "https://www.haiconsultingservices.com" \
+          --allowed-methods "GET" "POST" "OPTIONS" \
+          --allowed-headers "Content-Type" "Authorization" \
+          --exposed-headers "*"

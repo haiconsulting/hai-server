@@ -5,15 +5,19 @@
     "version": "[4.*, 5.0.0)"
   },
   "functionTimeout": "00:10:00",
-  "logging": {
-    "applicationInsights": {
-      "samplingSettings": {
-        "isEnabled": true,
-        "excludedTypes": "Request"
+  "extensions": {
+    "http": {
+      "routePrefix": "api",
+      "cors": {
+        "allowedOrigins": [
+          "http://localhost:3000",
+          "https://haiconsultingservices.com",
+          "https://www.haiconsultingservices.com"
+        ],
+        "allowedMethods": ["GET", "POST", "OPTIONS"],
+        "allowedHeaders": ["Content-Type", "Authorization"],
+        "maxAge": 86400
       }
-    },
-    "logLevel": {
-      "default": "Information"
     }
   }
 }
