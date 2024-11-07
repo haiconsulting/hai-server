@@ -25,27 +25,36 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
 
-    - name: 'Resolve Project Dependencies Using Npm'
+    - name: 'Clean Install Dependencies'
       shell: bash
       run: |
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-        npm install
+        rm -rf node_modules package-lock.json
+        npm install --production
         npm run build --if-present
         popd
 
-    - name: 'Run Azure Functions Action'
+    - name: 'Create function.json files'
+      shell: bash
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        func azure functionapp publish hai-server --build remote
+        popd
+
+    - name: 'Deploy to Azure Functions'
       uses: Azure/functions-action@v1
+      id: fa
       with:
         app-name: 'hai-server'
-        slot-name: 'production'
         package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+        respect-funcignore: true
+        scm-do-build-during-deployment: false
 
     - name: 'Configure Azure Function App Settings'
       uses: Azure/appservice-settings@v1
       with:
         app-name: 'hai-server'
-        slot-name: 'production'
         app-settings-json: |
           [
             {
@@ -66,6 +75,6 @@ jobs:
             },
             {
               "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
-              "value": "true"
+              "value": "false"
             }
           ]
