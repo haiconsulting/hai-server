@@ -20,6 +20,17 @@ jobs:
     - name: 'Checkout Repository'
       uses: actions/checkout@v4
 
+    - name: 'Validate Package Path'
+      run: |
+        if [ ! -d "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}" ]; then
+          echo "Error: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }} directory not found"
+          exit 1
+        fi
+        if [ ! -f "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/host.json" ]; then
+          echo "Error: host.json not found in ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}"
+          exit 1
+        fi
+
     - name: Setup Node ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v3
       with:
@@ -29,7 +40,7 @@ jobs:
 
     - name: Install Dependencies
       run: |
-        cd api
+        cd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
         npm ci
 
     - name: 'Deploy to Azure Functions'
