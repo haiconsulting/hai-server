@@ -1,20 +1,38 @@
-const express = require('express');
-const cors = require('cors');
 const OpenAI = require('openai');
-const functions = require('firebase-functions');
-require('dotenv').config();
+const dotenv = require('dotenv');
 
-const app = express();
+// Load environment variables from .env file
+dotenv.config();
 
-// Middleware
-app.use(cors({
-    origin: true, // Allow requests from any origin when deployed
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-}));
-app.use(express.json());
+// Log environment variables for debugging (remove in production)
+console.log('API Key exists:', !!process.env.OPENAI_API_KEY);
+console.log('Assistant ID exists:', !!process.env.ASSISTANT_ID);
 
-// ... rest of your existing routes ...
+if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY is not set in environment variables');
+}
 
-// Export the Express app as a Firebase Function
-exports.app = functions.https.onRequest(app); 
+if (!process.env.ASSISTANT_ID) {
+    throw new Error('ASSISTANT_ID is not set in environment variables');
+}
+
+// Initialize OpenAI
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+});
+
+// Test the OpenAI instance
+const testOpenAI = async () => {
+    try {
+        await openai.models.list();
+        console.log('OpenAI initialization successful');
+    } catch (error) {
+        console.error('OpenAI initialization failed:', error);
+        throw error;
+    }
+};
+
+// Run the test
+testOpenAI();
+
+module.exports = { openai }; 

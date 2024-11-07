@@ -12,10 +12,7 @@
         "dotenv": "^16.0.0",
         "openai": "^4.55.0"
     },
-    "devDependencies": {
-        "azure-functions-core-tools": "^4.x"
-    },
     "engines": {
         "node": ">=18.0.0"
     }
-}
+} 

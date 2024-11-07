@@ -1,2 +1,33 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependencies
+node_modules/
+.npm
+
+# Environment
 .env
-/node_modules
+local.settings.json
+api/local.settings.json
+
+# Azure Functions artifacts
+bin
+obj
+appsettings.json
+local.settings.json
+api/node_modules
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# System Files
+.DS_Store
+Thumbs.db
